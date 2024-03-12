@@ -3,8 +3,7 @@ name: Create S3 Bucket
 on:
   push:
     branches:
-      - main
-
+      - devlopment
 jobs:
   create_bucket:
     runs-on: ubuntu-latest
