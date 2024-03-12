@@ -3,7 +3,8 @@ name: Create S3 Bucket
 on:
   push:
     branches:
-      - devlopment
+      - main
+
 jobs:
   create_bucket:
     runs-on: ubuntu-latest
@@ -13,17 +14,17 @@ jobs:
       
       - name: Check if S3 bucket exists
         run: |
-          aws s3api head-bucket --bucket my-s3-bucket-name --region us-east-1 2>/dev/null || exit 0
+          aws s3api head-bucket --bucket ${{ secrets.S3_BUCKET_NAME }} 2>/dev/null || exit 0
           echo "Bucket already exists"
           exit 1
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: us-east-1
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
 
       - name: Create S3 bucket
-        run: aws s3api create-bucket --bucket ${{ secrets.S3_BUCKET_NAME }} --region ${{ secrets.AWS_REGION }} --create-bucket-configuration LocationConstraint=${{ secrets.AWS_REGION }}
+        run: aws s3api create-bucket --bucket shubham --region ${{ secrets.AWS_REGION }} --create-bucket-configuration LocationConstraint=${{ secrets.AWS_REGION }}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: us-east-1
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
